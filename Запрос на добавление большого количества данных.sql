@@ -1,17 +1,44 @@
+declare 
+	@idArrive int, 
+	@fioClient nvarchar(100),
+	@numOfRoom int, 
+	@daysOfLiving int, 
+	@arriveDate smalldatetime,
+	@leaveDate smalldatetime,
+	@sumForLiving money;
 
---insert Hotel.dbo.[TABLE](PARAM,...) values (VALUE);
 
 
---добавление клиентов
---insert Hotel.dbo.[TABLE](PARAM,...) values (VALUE);
+select 
+	id_Заезд,  
+	ФИО_клиента,
+	НомерКомнаты,
+	--dateDiff(DAY, Дата_заезда, Дата_выезда) + 1,
+	Дата_заезда,
+	Дата_выезда,
+	Цена_за_проживание+Цена_за_дополнительные_услуги
+from Заезд
+join Клиент on Клиент_id_Клиент=id_Клиент
+join Номер on idНомера=Номер_idНомера
 
-declare
-	@start int = 0,
-	@end int = 10;
 
-while @start < @end begin
-	set @start+=1;
-	SELECT TOP 1 * from Клиент
-	ORDER BY NEWID()	
-end
-print @start
+
+INSERT INTO [dbo].[МногоДанных]
+           ([КодЗаезда]
+           ,[ФИО_Клиента]
+           ,[НомерКомнаты]
+           ,[ДлительностьПроживания]
+           ,[ДатаЗаезда]
+           ,[ДатаВыезда]
+           ,[СуммаЗаПроживание])
+     VALUES
+			(@idArrive 
+			,@fioClient 
+			,@numOfRoom 
+			,@daysOfLiving 
+			,@arriveDate 
+			,@leaveDate 
+			,@sumForLiving)
+
+
+
